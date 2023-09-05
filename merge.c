@@ -1,75 +1,45 @@
-#include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<time.h>
 
-void merge(int arr[], int l, int mid, int r)
-{
-    
-    int an = mid - l + 1;
-    int bn = r - mid;
-    
-    int a[an];
-    int b[bn];
-    for (int i = 0; i < an; i++)
-    {
-        a[i] = arr[l + i];
+void merge(int arr[],int left[],int l_size,int right[],int r_size){
+    int i,j,k;
+    i=j=k=0;
+    while(i<l_size && r<r_size){
+        if(left[i] <= right[j]){
+        arr[k]=left[i];
+        i++;
+        }else{
+            arr[k]=right[j];
+            j++;
+        }
+        k++;
+
     }
-    for (int j = 0; j < bn; j++)
-    {
-        b[j] = arr[mid + 1 + j];
+    while (i<l_size){
+        arr[k]=left[i];
+        i++;
+        k++;
     }
-    int i = 0;
-    int j = 0;
-    int k = l; 
-    while (i < an && j < bn)
-    {
-        if (a[i] < b[j])
-            arr[k++] = a[i++];
-        else
-            arr[k++] = b[j++];
-    }
-    
-    while (i < an)
-    {
-        arr[k++] = a[i++];
-    }
-    while (j < bn)
-    {
-        arr[k++] = b[j++];
+    while (j<r_size){
+        arr[k]=right[j];
+        j++;
+        k++;
     }
 }
 
-void merge_sort(int arr[], int l, int r)
-{
-    if (l >= r)
+void merge_sort(int arr[],int size){
+    if (size<2){
         return;
-    int mid = (l + r) / 2;
-    merge_sort(arr, l, mid);
-    merge_sort(arr, mid + 1, r);
-    merge(arr, l, mid, r);
-}
-
-int main()
-{
-    int n;
-    printf("Enter the total number of Employee: ");
-    scanf("%d", &n);
-    int emp_id[n];
-    
-    for (int i = 0; i < n; i++)
-    {
-        emp_id[i] = rand() % 1000 + 1;
     }
-    clock_t time_taken = clock();
-    merge_sort(emp_id, 0, n - 1);
-    time_taken = clock() - time_taken;
-    double runtime = (double)time_taken / CLOCKS_PER_SEC;
-    
-    printf("\nEmployee Id in Sorted order: \n");
-    for (int i = 0; i < n; i++)
-    {
-        printf("%d ", emp_id[i]);
+    int mid=size/2;
+    int left[mid],right[size-mid];
+    for(int i=0;i<mid;i++){
+        left[i]=arr[i];
     }
-    printf("\nThe runtime is %lf", runtime);
-    return 0;
+    for (int i=mid;i<size;i++){
+        right[i-mid]=arr[i];
+    }
+    merge_sort(left,mid);
+    merge_sort(right,size-mid);
+    merge(arr,left,mid,right,size-mid);
 }
