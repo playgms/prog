@@ -1,50 +1,47 @@
+#include<stdio.h>
+#include<stdbool.h>
+#include<time.h>
 
-#include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
- 
-void bfs(int adj[][10], int total_city, int s_city)
-{
-    int visited[10];
-    for (int i = 0; i < total_city; i++)
-        visited[i] = 0;
+int a[10][10],source,n;
 
-    int q[10], front = 0, rear = -1;
-    q[++rear] = s_city;
-    visited[s_city] = 1;
-    int curr_city; 
-    printf("BFS Traversal of Dgital Map\n");
-    while (front <= rear)
-    {
-        curr_city = q[front++];
-        
-        for (int v = 0; v < total_city; v++)
-        {
-            if (adj[curr_city][v] == 1 && visited[v] == 0)
-            {
-                q[++rear] = v;
-                printf("%d --> %d\n", curr_city, v);
+void bfs(int a[10][10], int n, int source){
+    bool visited[10]={false};
+    int queue[10],front=0,rear=0;
+    queue[rear++]=source;
+    visited[source]=true;
+    printf("The bfs traversal is: \n");
+    while (front<rear){
+        int currentnode=queue[front++];
+        for(int i=0;i<n;i++){
+            if(a[currentnode][i] && !visited[i]){
+                visited[i]=true;
+                printf("%d to %d\n",currentnode,i);
+                queue[rear++]=i;
             }
         }
     }
-}
 
-void main()
-{
-    int adj[10][10]; 
-    int total_city;  
-    printf("Enter total number of cities: ");
-    scanf("%d", &total_city);
-    printf("Enter the matrix representation of digital map:\n");
-    for (int i = 0; i < total_city; i++)
-        for (int j = 0; j < total_city; j++)
-            scanf("%d", &adj[i][j]);
-    int s_city; 
-    printf("Enter a source city: ");
-    scanf("%d", &s_city);
-    clock_t time_taken = clock();
-    bfs(adj, total_city, s_city);
-    time_taken = clock() - time_taken;
-    double runtime = (double)time_taken / CLOCKS_PER_SEC;
-    printf("The total runtime is %f\n", runtime);
+
+}
+int main(){
+    printf("Enter the length of adjacency matrix: ");
+
+    scanf("%d",&n);
+    
+    printf (" Enter the adjacency matrix: ");
+    for ( int i =0; i<n;i++){
+        for (int j=0;j<n;j++){
+            scanf("%d",&a[i][j]);
+        }
+    }
+    printf("Enter the source Vertex: ");
+   
+    scanf("%d",&source);
+    clock_t startime, endtime;
+    double clk;
+    startime=clock();
+    bfs(a,n,source);
+    endtime=clock();
+    clk= (endtime-startime)/CLOCKS_PER_SEC;
+    printf("The runtime for the give bfs traversal is: %f",clk);
 }
