@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <math.h>
 
-#define FALSE 0
-#define TRUE 1
 
 int x[20];
 
@@ -10,10 +8,10 @@ int place(int k, int i) {
 int j;
 for (j = 1; j <= k - 1; j++) {
 if (x[j] == i || abs(x[j] - i) == abs(j - k)) {
-return FALSE;
+return 0;
 }
 }
-return TRUE;
+return 1;
 }
 
 void nqueens(int k, int n) {
